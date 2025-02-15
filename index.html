@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Remove Bg</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
+    <link rel="icon" type="image/x-icon" href="https://storage.googleapis.com/a1aa/image/_mujT1o2aqNxZK9NhQDgCJgmGCwA5r9YNjn7Ahn_ufM.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+
+      .button-hover:hover {
+        transform: translateY(-4px);
+        transition: transform 0.2s ease-in-out;
+      }
+
+      .image-preview {
+        transition: opacity 0.5s ease-in-out;
+        opacity: 0;
+      }
+
+      .image-preview-visible {
+        opacity: 1;
+      }
+
+      @media (max-width: 768px) {
+        .header-container {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .image-container {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 10px;
+        }
+
+        .image-container img {
+          width: 80px;
+          height: 80px;
+        }
+      }
+
+      .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 2s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* Animasi untuk gambar hasil remove background */
+      @keyframes fadeInUp {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .fade-in-up {
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      /* Styling untuk tombol Download Image */
+      .download-button {
+        display: inline-block;
+        background-color: #3498db;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+
+      .download-button:hover {
+        background-color: #2980b9;
+        transform: scale(1.05);
+      }
+
+      .download-button i {
+        margin-right: 8px;
+      }
+
+      /* Styling untuk input URL */
+      .url-input {
+        width: 100%;
+        max-width: 400px;
+        padding: 10px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 16px;
+        margin-top: 10px;
+        transition: border-color 0.3s ease;
+      }
+
+      .url-input:focus {
+        border-color: #3498db;
+        outline: none;
+      }
+
+      .url-button {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .url-button:hover {
+        background-color: #2980b9;
+      }
+      ::-webkit-scrollbar {
+        width: 10px;
+        display: none;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        display: none;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        display: none;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+        display: none;
+    }
+body {
+  user-select: none;
+}
+
+.no-select {
+  user-select: none;
+}
+
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <header class="bg-white shadow-sm">
+      <div class="container mx-auto flex justify-between items-center py-4 px-6 header-container">
+        <div class="flex items-center">
+          <img alt="Logo" class="h-10 w-10" height="40" src="https://storage.googleapis.com/a1aa/image/_mujT1o2aqNxZK9NhQDgCJgmGCwA5r9YNjn7Ahn_ufM.jpg" width="40"/>
+          <span class="ml-2 text-xl font-bold">Remove Background</span>
+        </div>
+      </div>
+    </header>
+    <main class="container mx-auto text-center py-16 px-6">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Hapus latar belakang secara instan</h1>
+      <p class="mt-4 text-lg text-gray-600">Hapus latar belakang gambar Anda dengan mudah, hanya dalam hitungan detik dan gratis.</p>
+      
+      <div class="mt-10 bg-white shadow-lg rounded-lg p-6 md:p-10 mx-auto max-w-2xl">
+        <input type="file" id="fileInput" class="hidden"/>
+        <label for="fileInput" class="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-800 cursor-pointer button-hover">
+          Pilih Gambar
+        </label>
+        <p class="mt-2 text-gray-600">Anda juga dapat menyalin dan menempelkan URL</p>
+        <div class="mt-4">
+          <input type="text" id="urlInput" class="url-input" placeholder="Masukkan URL gambar"/>
+          <button id="urlSubmit" class="url-button mt-2">Hapus Latar Belakang dari URL</button>
+        </div>
+        <div id="uploaded-image-container" class="mt-6"></div>
+        <div id="remove-bg-button-container" class="mt-6"></div>
+        <div id="image-container" class="mt-6"></div>
+        <div class="mt-6">
+          <p class="text-gray-600">Tidak ada gambar? Cobalah salah satu dari ini:</p>
+          <div class="flex justify-center space-x-4 mt-4 image-container">
+            <img alt="Sample image 1" class="h-16 w-16 rounded cursor-pointer" height="60" src="https://storage.googleapis.com/a1aa/image/a8ali8CE6VsMWETqPsC7edrESVeR1gOpSJ-0sxroGNs.jpg" width="60" onclick="handleSampleImage(this.src)"/>
+            <img alt="Sample image 2" class="h-16 w-16 rounded cursor-pointer" height="60" src="https://storage.googleapis.com/a1aa/image/rcb5YgQ-XQbl7ooW4vGPJitmFJHwUv3CjLoJFvuvrGQ.jpg" width="60" onclick="handleSampleImage(this.src)"/>
+            <img alt="Sample image 3" class="h-16 w-16 rounded cursor-pointer" height="60" src="https://storage.googleapis.com/a1aa/image/zQh9dQAIrfsjHA_KkRB3wnlrQyUG26Fq7PjSKkzLffg.jpg" width="60" onclick="handleSampleImage(this.src)"/>
+            <img alt="Sample image 4" class="h-16 w-16 rounded cursor-pointer" height="60" src="https://storage.googleapis.com/a1aa/image/D_yWd8OA6KPdvg2qt16sjEhRBXtehQ7830r-ICJL9m8.jpg" width="60" onclick="handleSampleImage(this.src)"/>
+            <img alt="Sample image 5" class="h-16 w-16 rounded cursor-pointer" height="60" src="https://storage.googleapis.com/a1aa/image/dFlxL9kE5-q7AL0G9z3WAmQWXL3KLOPTXoK7k-q-zBw.jpg" width="60" onclick="handleSampleImage(this.src)"/>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      const apiKey = 'cufTmpycJCxw3ND5oeBKMrhv';
+      var music = new Audio('sound/download.mp3');
+      var music2 = new Audio('sound/finish.mp3');
+      var music3 = new Audio('sound/gagal.mp3');
+
+      document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+      document.getElementById('urlSubmit').addEventListener('click', handleUrlSubmit);
+
+      function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = function () {
+            const imgElement = document.createElement('img');
+            imgElement.src = reader.result;
+            imgElement.classList.add('w-full', 'h-auto', 'rounded-lg', 'border-2', 'border-gray-200', 'transition-opacity', 'opacity-0');
+            
+            document.getElementById('uploaded-image-container').innerHTML = '';
+            music.play();
+            document.getElementById('uploaded-image-container').appendChild(imgElement);
+
+            setTimeout(() => {
+              imgElement.classList.add('opacity-100');
+            }, 100);
+
+            const removeBgButton = document.createElement('button');
+            removeBgButton.innerText = 'Remove Background';
+            removeBgButton.classList.add('bg-blue-500', 'text-white', 'px-6', 'py-3', 'rounded-full', 'text-lg', 'font-semibold', 'hover:bg-blue-600', 'mt-4', 'cursor-pointer', 'button-hover');
+            document.getElementById('remove-bg-button-container').innerHTML = '';
+            document.getElementById('remove-bg-button-container').appendChild(removeBgButton);
+
+            removeBgButton.addEventListener('click', () => removeBackground(file));
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      function handleUrlSubmit() {
+        const url = document.getElementById('urlInput').value.trim();
+        if (url) {
+          fetch(url)
+            .then(response => response.blob())
+            .then(blob => {
+              const file = new File([blob], 'image-from-url.jpg', { type: 'image/jpeg' });
+              removeBackground(file);
+            })
+            .catch(error => {
+              music3.play();
+              console.error('Error:', error);
+              alert('Gagal memuat gambar dari URL. Pastikan URL valid.');
+            });
+        } else {
+            music3.play();
+          alert('Masukkan URL gambar terlebih dahulu.');
+        }
+      }
+
+      function handleSampleImage(imageUrl) {
+        fetch(imageUrl)
+          .then(response => response.blob())
+          .then(blob => {
+            const file = new File([blob], 'sample-image.jpg', { type: 'image/jpeg', lastModified: Date.now() });
+            removeBackground(file);
+          });
+      }
+
+      function removeBackground(file) {
+        const formData = new FormData();
+        formData.append('image_file', file);
+        formData.append('size', 'auto');
+
+        const loadingMessage = document.createElement('div');
+        loadingMessage.classList.add('spinner', 'mx-auto');
+        document.getElementById('image-container').innerHTML = '';
+        document.getElementById('image-container').appendChild(loadingMessage);
+
+        fetch('https://api.remove.bg/v1.0/removebg', {
+          method: 'POST',
+          headers: {
+            'X-Api-Key': apiKey
+          },
+          body: formData
+        })
+        .then(response => response.blob())
+        .then(imageBlob => {
+          loadingMessage.remove();
+          const imageUrl = URL.createObjectURL(imageBlob);
+          displayImage(imageUrl);
+        })
+        .catch(error => {
+            music3.play();
+          console.error('Error:', error);
+          alert('Terjadi kesalahan. Silakan coba lagi.');
+        });
+      }
+
+      function displayImage(imageUrl) {
+        const imageContainer = document.getElementById('image-container');
+        const imageElement = document.createElement('img');
+        imageElement.src = imageUrl;
+        imageElement.classList.add('w-full', 'h-auto', 'rounded-lg', 'border-2', 'border-gray-200', 'fade-in-up');
+        
+        const downloadLink = document.createElement('a');
+        downloadLink.href = imageUrl;
+        downloadLink.download = 'background_removed.png';
+        music2.play();
+        downloadLink.classList.add('download-button');
+        downloadLink.innerHTML = '<i class="fas fa-download"></i> Download Image';
+        imageContainer.innerHTML = '';
+        imageContainer.appendChild(imageElement);
+        imageContainer.appendChild(downloadLink);
+      }
+    </script>
+  </body>
+</html>
